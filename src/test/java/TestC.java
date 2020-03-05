@@ -223,4 +223,41 @@ public class TestC {
         List<Cost> result = BigCode.addNewCosts(first, currentNew);
         Assert.assertThat(result, is(expect));
     }
+
+    @Test
+    public void TestJoin_WhenSameExceptValues() {
+        //current
+        Cost first = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 80);
+        //input
+        Cost firstNew = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 90);
+        //result
+        Cost firstResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 90);
+        List<Cost> expect = new ArrayList<>();
+        expect.add(firstResult);
+        List<Cost> result = BigCode.join(first, firstNew);
+        Assert.assertThat(result, is(expect));
+    }
+
+    @Test
+    public void TestJoin_WhenProduct_codesDifferent() {
+        //current
+        Cost first = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 80);
+        //input
+        Cost firstNew = new Cost(0, "132213", 1, 1,
+                LocalDateTime.parse("28.12.2012 00:00:00", fmt), LocalDateTime.parse("02.01.2013 00:00:00", fmt), 75);
+        //result
+        Cost firstResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 80);
+        Cost secondResult = new Cost(0, "132213", 1, 1,
+                LocalDateTime.parse("28.12.2012 00:00:00", fmt), LocalDateTime.parse("02.01.2013 00:00:00", fmt), 75);
+        List<Cost> expect = new ArrayList<>();
+        expect.add(firstResult);
+        expect.add(secondResult);
+        List<Cost> result = BigCode.join(first, firstNew);
+        Assert.assertThat(result, is(expect));
+    }
 }
