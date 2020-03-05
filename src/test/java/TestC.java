@@ -260,4 +260,58 @@ public class TestC {
         List<Cost> result = BigCode.join(first, firstNew);
         Assert.assertThat(result, is(expect));
     }
+
+    @Test
+    public void TestJoin_WhenSameValues1() {
+        //current
+        Cost first = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("16.01.2013 00:00:00", fmt), 80);
+        //input
+        Cost firstNew = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("10.01.2013 00:00:00", fmt), LocalDateTime.parse("01.02.2013 00:00:00", fmt), 80);
+        //result
+        Cost firstResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("01.02.2013 00:00:00", fmt), 80);
+        List<Cost> expect = new ArrayList<>();
+        expect.add(firstResult);
+        List<Cost> result = BigCode.join(first, firstNew);
+        Assert.assertThat(result, is(expect));
+    }
+
+    @Test
+    public void TestJoin_WhenDifferentValues() {
+        //current
+        Cost first = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("16.01.2013 00:00:00", fmt), 80);
+        //input
+        Cost firstNew = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("10.01.2013 00:00:00", fmt), LocalDateTime.parse("01.02.2013 00:00:00", fmt), 100);
+        //result
+        Cost firstResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("10.01.2013 00:00:00", fmt), 80);
+        Cost secondResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("10.01.2013 00:00:00", fmt), LocalDateTime.parse("01.02.2013 00:00:00", fmt), 100);
+        List<Cost> expect = new ArrayList<>();
+        expect.add(firstResult);
+        expect.add(secondResult);
+        List<Cost> result = BigCode.join(first, firstNew);
+        Assert.assertThat(result, is(expect));
+    }
+
+    @Test
+    public void TestJoin_WhenBetweenAndSameValues() {
+        //current
+        Cost first = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("16.01.2013 00:00:00", fmt), 80);
+        //input
+        Cost firstNew = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("03.01.2013 00:00:00", fmt), LocalDateTime.parse("06.01.2013 00:00:00", fmt), 80);
+        //result
+        Cost firstResult = new Cost(0, "2345", 1, 1,
+                LocalDateTime.parse("01.01.2013 00:00:00", fmt), LocalDateTime.parse("16.01.2013 00:00:00", fmt), 80);
+        List<Cost> expect = new ArrayList<>();
+        expect.add(firstResult);
+        List<Cost> result = BigCode.join(first, firstNew);
+        Assert.assertThat(result, is(expect));
+    }
 }
